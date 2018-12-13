@@ -1,116 +1,16 @@
-******************************************************************************
-    RX63Nグループ・サンプルプログラム (LCD)
-    
-    Copyright (c) 2013, eForce Co., Ltd. All rights reserved.
-    
-    2013-04-08
-******************************************************************************
+■ Introduction
+????I will explain how to use the sample program for RX63N. This sample program includes: activation of OS, lighting of LED, acquisition of state of switch and touch panel, display of LCD.
+■ Development environment
+????This sample program uses the following evaluation board and development tools.
+????Evaluation board: Alpha Project Co., Ltd.
+???????????????????AP-RX63N-0A (RX 600 series RX63N CPU board)
+?????????????????? Alpha Project Co., Ltd.
+???????????????????LCD-KIT-D01 (multi-touch compatible capacitive touch panel LCD kit)
+?????????????????
+????Compiler: Renesas Electronics Corporation
+???????????????????Integrated development environment CubeSuite + v1.03.00
+????
+????Debugger: Renesas Electronics Corporation
+???????????????????On-chip debugging emulator E1 emulator
 
-■ はじめに
-
-    RX63N用のサンプルプログラムの使用方法を説明します。本サンプルプログラムは
-  OSの起動、LEDの点灯、スイッチとタッチパネルの状態取得、さらにLCDの表示の
-  実装例になります。タッチパネルとLCDの処理は株式会社アルファプロジェクトの
-  サンプルプログラムを参考にしています。
-
-■ 開発環境
-
-    本サンプルプログラムは下記の評価ボードと開発ツールを使用しています。
-
-    評価ボード : 株式会社アルファプロジェクト
-                   AP-RX63N-0A（RX600シリーズ RX63N CPUボード）
-                 
-                 株式会社アルファプロジェクト
-                   LCD-KIT-D01（マルチタッチ対応静電容量式タッチパネルLCDキット）
-                 
-    コンパイラ : ルネサスエレクトロニクス株式会社
-                   統合開発環境 CubeSuite+ v1.03.00
-    
-    デバッガ   : ルネサスエレクトロニクス株式会社
-                   オンチップデバッギングエミュレータ E1エミュレータ
-
-■ ファイル構成
-
-    本サンプルプログラムが使用する主なファイルは次のようになります。下記以外の
-  ファイル（OSのライブラリやドライバなど）はOSに付属のコンフィギュレーターを
-  使用して出力してください。
-
-     uC3
-      ├─Configurator
-      │  └─ Configurator.exe .............コンフィギュレーター
-      └─Compact
-          └─Sample
-            └─CubeSuite
-              └─AP_RX63N_0A.LCD ...........サンプルプログラム
-                  ├─ddr_lcd.c ................LCDのダイレクトドライブの処理
-                  ├─ddr_lcd_dat.c ............LCDの画像データ
-                  ├─DDR_RX_SCI_I2C.c .........簡易I2Cのソースファイル
-                  ├─DDR_RX_SCI_I2C.h .........簡易I2Cのヘッダファイル
-                  ├─DDR_RX_SCI_I2C_cfg.h .....簡易I2Cの設定
-                  ├─ddr_tpl.c ................タッチパネルの処理
-                  ├─sample.c .................サンプルプログラムの本体
-                  ├─uC3Project.3cf ...........コンフィギュレーターのプロジェクトファイル
-                  └─ap_rx63n
-                       └─ap_rx63n.mtpj .......CubeSuite+のプロジェクトファイル
-
-■ 評価ボードの設定
-
-    評価ボードのAP-RX63N-0AにLCDキットとE1エミュレータを接続してください。
-  評価ボードのAP-RX63N-0Aの各スイッチはデフォルト（出荷時）の設定を使用して
-  ください。E1エミュレータを使用する場合はスイッチのEMLEをHighに設定してください。
-
-■ デバッグ実行
-
-    サンプルプログラムのビルドとデバッグ実行の方法を説明します。
-
-    ◆ ソースファイルの出力
-    
-        デスクトップのアイコンのコンフィギュレーター（Configurator.exe）を
-      起動し、下記のファイルを開きます。
-      
-        uC3/Compact/Sample/CubeSuite/AP_RX63N_0A.LCD/uC3Project.3cf
-      
-        メニューの“プロジェクト->ソース生成”を選択し、下記のフォルダへソースを
-      出力します。
-      
-        uC3/Compact/Sample/CubeSuite/AP_RX63N_0A.LCD
-      
-        ビルドに必要なライブラリとソースファイルが出力されました。
-    
-    ◆ ビルド
-    
-        下記のファイルをダブルクリックして開発環境のCubeSuite+を起動します。
-        
-        uC3/Compact/Sample/CubeSuite/AP_RX63N_0A.LCD/ap_rx63n/ap_rx63n.mtpj
-        
-        メニューの“ビルド->ビルド・プロジェクト”を選択してロードモジュールを
-      作成します。
-
-    ◆ 実行
-
-        CubeSuite+のメニューの“デバッグ->デバッグ・ツールへ接続”を選択して
-      E1エミュレータへ接続します。次に、“デバッグ->デバッグ・ツールへダウンロード”
-      を選択すると、ロードモジュールを評価ボードへダウンロードし、CubeSuite+の
-      画面はmain関数の最初で停止します。ここで、ファンクションキーのF5を押すと
-      プログラムを実行します。
-        プログラムの実行中はLEDが点滅し、LCDに画像が表示されます。指でLCDに
-      タッチするとタッチした場所に画像が移動します。また、押しボタンスイッチには
-      下記の機能があります。
-      
-        SW1: 画面を暗くする
-        SW2: 画像を中央に表示する
-        SW3: 画面を明るくする
-
-■ ソースファイルの概要
-
-    LCDへ画像を表示する処理はddr_lcd.cに実装しています。LCDダイレクトドライブを
-  使用し、タイマの割り込みの関数（ddr_lcd_intr）はOSのカーネル管理外割り込みを
-  使用しています。LCDに表示する画像データはddr_lcd_dat.cにあります。LCDのバック
-  ライトを調整するために簡易のI2Cのドライバ（DDR_RX_SCI_I2C.c）を使用しています。
-
-    関数のMainTask（sample.c）はタッチパネルとスイッチの処理を行います。I2C、LCD、
-  タッチパネルを初期化してから関数のtpl_get_datを発行します。この関数は構造体の
-  T_TPL_DATにタッチパネルとスイッチの状態を格納します。スイッチの1と3が押された
-  場合はLCDのバックライトを調整します。スイッチの2とタッチパネルが押された場合は
-  画像の表示位置を移動します。なお、画像の表示位置はLCDの左上がx=0、y=0になります。
 
