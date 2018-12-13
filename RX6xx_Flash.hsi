@@ -1,0 +1,8 @@
+[Section Information]
+Version=1.0
+Entry=5
+Group1=B_1,R_1,B_2,R_2,B,R,SU,SI(00001000)
+Group2=PResetPRG(0FFE00000)
+Group3=C_1,C_2,C,C$*,D_1,D_2,D,P,PIntPRG,W*,L(0FFE00200)
+Group4=VECTTBL(0FFFFFB80)
+Group5=FIXEDVECT(0FFFFFFD0)

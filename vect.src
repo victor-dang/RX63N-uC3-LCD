@@ -1,0 +1,295 @@
+;****************************************************************************
+;* Vector table                                                             *
+;*                                                                          *
+;*  File name : vect.src                                                    *
+;****************************************************************************
+
+;* Section definition
+
+        .section    VECTTBL,ROMDATA,ALIGN=4
+
+;* Interrupt vector table
+
+        .glb        _ResetHandler
+        .glb        _int_abort
+        .glb        default_exception
+        .glb        inthdr_28
+        .glb        inthdr_69
+        .glb        exphdr_152
+        .glb        inthdr_220
+        .glb        inthdr_221
+        .glb        inthdr_222
+
+        .lword      _int_abort                       ; 0: 000:reserved
+        .lword      _int_abort                       ; 1: 001:reserved
+        .lword      _int_abort                       ; 2: 002:reserved
+        .lword      _int_abort                       ; 3: 003:reserved
+        .lword      _int_abort                       ; 4: 004:reserved
+        .lword      _int_abort                       ; 5: 005:reserved
+        .lword      _int_abort                       ; 6: 006:reserved
+        .lword      _int_abort                       ; 7: 007:reserved
+        .lword      _int_abort                       ; 8: 008:reserved
+        .lword      _int_abort                       ; 9: 009:reserved
+        .lword      _int_abort                       ; 10: 010:reserved
+        .lword      _int_abort                       ; 11: 011:reserved
+        .lword      _int_abort                       ; 12: 012:reserved
+        .lword      _int_abort                       ; 13: 013:reserved
+        .lword      _int_abort                       ; 14: 014:reserved
+        .lword      _int_abort                       ; 15: 015:reserved
+        .lword      _int_abort                       ; 16: 016:BUSERR
+        .lword      _int_abort                       ; 17: 017:reserved
+        .lword      _int_abort                       ; 18: 018:reserved
+        .lword      _int_abort                       ; 19: 019:reserved
+        .lword      _int_abort                       ; 20: 020:reserved
+        .lword      _int_abort                       ; 21: 021:FIFERR
+        .lword      _int_abort                       ; 22: 022:reserved
+        .lword      _int_abort                       ; 23: 023:FRDYI
+        .lword      _int_abort                       ; 24: 024:reserved
+        .lword      _int_abort                       ; 25: 025:reserved
+        .lword      _int_abort                       ; 26: 026:reserved
+        .lword      _int_abort                       ; 27: 027:SWINT
+        .lword      inthdr_28                       ; 28: 028:CMI0
+        .lword      _int_abort                       ; 29: 029:CMI1
+        .lword      _int_abort                       ; 30: 030:CMI2
+        .lword      _int_abort                       ; 31: 031:CMI3
+        .lword      _int_abort                       ; 32: 032:EINT
+        .lword      _int_abort                       ; 33: 033:D0FIFO0
+        .lword      _int_abort                       ; 34: 034:D1FIFO0
+        .lword      _int_abort                       ; 35: 035:USBI0
+        .lword      _int_abort                       ; 36: 036:D0FIFO1
+        .lword      _int_abort                       ; 37: 037:D1FIFO1
+        .lword      _int_abort                       ; 38: 038:USBI1
+        .lword      _int_abort                       ; 39: 039:SPRI0
+        .lword      _int_abort                       ; 40: 040:SPTI0
+        .lword      _int_abort                       ; 41: 041:SPII0
+        .lword      _int_abort                       ; 42: 042:SPRI1
+        .lword      _int_abort                       ; 43: 043:SPTI1
+        .lword      _int_abort                       ; 44: 044:SPII1
+        .lword      _int_abort                       ; 45: 045:SPRI2
+        .lword      _int_abort                       ; 46: 046:SPTI2
+        .lword      _int_abort                       ; 47: 047:SPII2
+        .lword      _int_abort                       ; 48: 048:RXF0
+        .lword      _int_abort                       ; 49: 049:TXF0
+        .lword      _int_abort                       ; 50: 050:RXM0
+        .lword      _int_abort                       ; 51: 051:TXM0
+        .lword      _int_abort                       ; 52: 052:RXF1
+        .lword      _int_abort                       ; 53: 053:TXF1
+        .lword      _int_abort                       ; 54: 054:RXM1
+        .lword      _int_abort                       ; 55: 055:TXM1
+        .lword      _int_abort                       ; 56: 056:RXF2
+        .lword      _int_abort                       ; 57: 057:TXF2
+        .lword      _int_abort                       ; 58: 058:RXM2
+        .lword      _int_abort                       ; 59: 059:TXM2
+        .lword      _int_abort                       ; 60: 060:reserved
+        .lword      _int_abort                       ; 61: 061:reserved
+        .lword      _int_abort                       ; 62: 062:CUP
+        .lword      _int_abort                       ; 63: 063:reserved
+        .lword      _int_abort                       ; 64: 064:IRQ0
+        .lword      _int_abort                       ; 65: 065:IRQ1
+        .lword      _int_abort                       ; 66: 066:IRQ2
+        .lword      _int_abort                       ; 67: 067:IRQ3
+        .lword      _int_abort                       ; 68: 068:IRQ4
+        .lword      inthdr_69                       ; 69: 069:IRQ5
+        .lword      _int_abort                       ; 70: 070:IRQ6
+        .lword      _int_abort                       ; 71: 071:IRQ7
+        .lword      _int_abort                       ; 72: 072:IRQ8
+        .lword      _int_abort                       ; 73: 073:IRQ9
+        .lword      _int_abort                       ; 74: 074:IRQ10
+        .lword      _int_abort                       ; 75: 075:IRQ11
+        .lword      _int_abort                       ; 76: 076:IRQ12
+        .lword      _int_abort                       ; 77: 077:IRQ13
+        .lword      _int_abort                       ; 78: 078:IRQ14
+        .lword      _int_abort                       ; 79: 079:IRQ15
+        .lword      _int_abort                       ; 80: 080:reserved
+        .lword      _int_abort                       ; 81: 081:reserved
+        .lword      _int_abort                       ; 82: 082:reserved
+        .lword      _int_abort                       ; 83: 083:reserved
+        .lword      _int_abort                       ; 84: 084:reserved
+        .lword      _int_abort                       ; 85: 085:reserved
+        .lword      _int_abort                       ; 86: 086:reserved
+        .lword      _int_abort                       ; 87: 087:reserved
+        .lword      _int_abort                       ; 88: 088:reserved
+        .lword      _int_abort                       ; 89: 089:reserved
+        .lword      _int_abort                       ; 90: 090:USBR0
+        .lword      _int_abort                       ; 91: 091:USBR1
+        .lword      _int_abort                       ; 92: 092:ALM
+        .lword      _int_abort                       ; 93: 093:PRD
+        .lword      _int_abort                       ; 94: 094:reserved
+        .lword      _int_abort                       ; 95: 095:reserved
+        .lword      _int_abort                       ; 96: 096:reserved
+        .lword      _int_abort                       ; 97: 097:reserved
+        .lword      _int_abort                       ; 98: 098:ADI0
+        .lword      _int_abort                       ; 99: 099:reserved
+        .lword      _int_abort                       ; 100: 100:reserved
+        .lword      _int_abort                       ; 101: 101:reserved
+        .lword      _int_abort                       ; 102: 102:S12ADI0
+        .lword      _int_abort                       ; 103: 103:reserved
+        .lword      _int_abort                       ; 104: 104:reserved
+        .lword      _int_abort                       ; 105: 105:reserved
+        .lword      _int_abort                       ; 106: 106:GROUP0
+        .lword      _int_abort                       ; 107: 107:GROUP1
+        .lword      _int_abort                       ; 108: 108:GROUP2
+        .lword      _int_abort                       ; 109: 109:GROUP3
+        .lword      _int_abort                       ; 110: 110:GROUP4
+        .lword      _int_abort                       ; 111: 111:GROUP5
+        .lword      _int_abort                       ; 112: 112:GROUP6
+        .lword      _int_abort                       ; 113: 113:reserved
+        .lword      _int_abort                       ; 114: 114:GROUP12
+        .lword      _int_abort                       ; 115: 115:reserved
+        .lword      _int_abort                       ; 116: 116:reserved
+        .lword      _int_abort                       ; 117: 117:reserved
+        .lword      _int_abort                       ; 118: 118:reserved
+        .lword      _int_abort                       ; 119: 119:reserved
+        .lword      _int_abort                       ; 120: 120:reserved
+        .lword      _int_abort                       ; 121: 121:reserved
+        .lword      _int_abort                       ; 122: 122:SCIX0
+        .lword      _int_abort                       ; 123: 123:SCIX1
+        .lword      _int_abort                       ; 124: 124:SCIX2
+        .lword      _int_abort                       ; 125: 125:SCIX3
+        .lword      _int_abort                       ; 126: 126:TGI0A
+        .lword      _int_abort                       ; 127: 127:TGI0B
+        .lword      _int_abort                       ; 128: 128:TGI0C
+        .lword      _int_abort                       ; 129: 129:TGI0D
+        .lword      _int_abort                       ; 130: 130:TGI1A
+        .lword      _int_abort                       ; 131: 131:TGI1B
+        .lword      _int_abort                       ; 132: 132:TGI2A
+        .lword      _int_abort                       ; 133: 133:TGI2B
+        .lword      _int_abort                       ; 134: 134:TGI3A
+        .lword      _int_abort                       ; 135: 135:TGI3B
+        .lword      _int_abort                       ; 136: 136:TGI3C
+        .lword      _int_abort                       ; 137: 137:TGI3D
+        .lword      _int_abort                       ; 138: 138:TGI4A
+        .lword      _int_abort                       ; 139: 139:TGI4B
+        .lword      _int_abort                       ; 140: 140:TGI5A
+        .lword      _int_abort                       ; 141: 141:TGI5B
+        .lword      _int_abort                       ; 142: 142:TGI6A(TPU6)/TGIA0(MTU0)
+        .lword      _int_abort                       ; 143: 143:TGI6B(TPU6)/TGIB0(MTU0)
+        .lword      _int_abort                       ; 144: 144:TGI6C(TPU6)/TGIC0(MTU0)
+        .lword      _int_abort                       ; 145: 145:TGI6D(TPU6)/TGID0(MTU0)
+        .lword      _int_abort                       ; 146: 146:TGIE0(MTU0)
+        .lword      _int_abort                       ; 147: 147:TGIF0(MTU0)
+        .lword      _int_abort                       ; 148: 148:TGI7A(TPU7)/TGIA1(MTU1)
+        .lword      _int_abort                       ; 149: 149:TGI7B(TPU7)/TGIB1(MTU1)
+        .lword      _int_abort                       ; 150: 150:TGI8A(TPU8)/TGIA2(MTU2)
+        .lword      _int_abort                       ; 151: 151:TGI8B(TPU8)/TGIB2(MTU2)
+        .lword      exphdr_152                       ; 152: 152:TGI9A(TPU9)/TGIA3(MTU3)
+        .lword      _int_abort                       ; 153: 153:TGI9B(TPU9)/TGIB3(MTU3)
+        .lword      _int_abort                       ; 154: 154:TGI9C(TPU9)/TGIC3(MTU3)
+        .lword      _int_abort                       ; 155: 155:TGI9D(TPU9)/TGID3(MTU3)
+        .lword      _int_abort                       ; 156: 156:TGI10A(TPU10)/TGIA4(MTU4)
+        .lword      _int_abort                       ; 157: 157:TGI10B(TPU10)/TGIB4(MTU4)
+        .lword      _int_abort                       ; 158: 158:TGIC4(MTU4)
+        .lword      _int_abort                       ; 159: 159:TGID4(MTU4)
+        .lword      _int_abort                       ; 160: 160:TCIV4(MTU4)
+        .lword      _int_abort                       ; 161: 161:TGIU5(MTU5)
+        .lword      _int_abort                       ; 162: 162:TGIV5(MTU5)
+        .lword      _int_abort                       ; 163: 163:TGIW5(MTU5)
+        .lword      _int_abort                       ; 164: 164:TGI11A(TPU11)
+        .lword      _int_abort                       ; 165: 165:TGI11B(TPU11)
+        .lword      _int_abort                       ; 166: 166:OEI1
+        .lword      _int_abort                       ; 167: 167:OEI2
+        .lword      _int_abort                       ; 168: 168:reserved
+        .lword      _int_abort                       ; 169: 169:reserved
+        .lword      _int_abort                       ; 170: 170:CMIA0
+        .lword      _int_abort                       ; 171: 171:CMIB0
+        .lword      _int_abort                       ; 172: 172:OVI0
+        .lword      _int_abort                       ; 173: 173:CMIA1
+        .lword      _int_abort                       ; 174: 174:CMIB1
+        .lword      _int_abort                       ; 175: 175:OVI1
+        .lword      _int_abort                       ; 176: 176:CMIA2
+        .lword      _int_abort                       ; 177: 177:CMIB2
+        .lword      _int_abort                       ; 178: 178:OVI2
+        .lword      _int_abort                       ; 179: 179:CMIA3
+        .lword      _int_abort                       ; 180: 180:CMIB3
+        .lword      _int_abort                       ; 181: 181:OVI3
+        .lword      _int_abort                       ; 182: 182:EEI0
+        .lword      _int_abort                       ; 183: 183:RXI0
+        .lword      _int_abort                       ; 184: 184:TXI0
+        .lword      _int_abort                       ; 185: 185:TEI0
+        .lword      _int_abort                       ; 186: 186:EEI1
+        .lword      _int_abort                       ; 187: 187:RXI1
+        .lword      _int_abort                       ; 188: 188:TXI1
+        .lword      _int_abort                       ; 189: 189:TEI1
+        .lword      _int_abort                       ; 190: 190:EEI2
+        .lword      _int_abort                       ; 191: 191:RXI2
+        .lword      _int_abort                       ; 192: 192:TXI2
+        .lword      _int_abort                       ; 193: 193:TEI2
+        .lword      _int_abort                       ; 194: 194:EEI3
+        .lword      _int_abort                       ; 195: 195:RXI3
+        .lword      _int_abort                       ; 196: 196:TXI3
+        .lword      _int_abort                       ; 197: 197:TEI3
+        .lword      _int_abort                       ; 198: 198:DMAC0I
+        .lword      _int_abort                       ; 199: 199:DMAC1I
+        .lword      _int_abort                       ; 200: 200:DMAC2I
+        .lword      _int_abort                       ; 201: 201:DMAC3I
+        .lword      _int_abort                       ; 202: 202:EXDMAC0I
+        .lword      _int_abort                       ; 203: 203:EXDMAC1I
+        .lword      _int_abort                       ; 204: 204:reserved
+        .lword      _int_abort                       ; 205: 205:reserved
+        .lword      _int_abort                       ; 206: 206:reserved
+        .lword      _int_abort                       ; 207: 207:reserved
+        .lword      _int_abort                       ; 208: 208:reserved
+        .lword      _int_abort                       ; 209: 209:reserved
+        .lword      _int_abort                       ; 210: 210:reserved
+        .lword      _int_abort                       ; 211: 211:reserved
+        .lword      _int_abort                       ; 212: 212:reserved
+        .lword      _int_abort                       ; 213: 213:reserved
+        .lword      _int_abort                       ; 214: 214:RXI0
+        .lword      _int_abort                       ; 215: 215:TXI0
+        .lword      _int_abort                       ; 216: 216:TEI0
+        .lword      _int_abort                       ; 217: 217:RXI1
+        .lword      _int_abort                       ; 218: 218:TXI1
+        .lword      _int_abort                       ; 219: 219:TEI1
+        .lword      inthdr_220                       ; 220: 220:RXI2
+        .lword      inthdr_221                       ; 221: 221:TXI2
+        .lword      inthdr_222                       ; 222: 222:TEI2
+        .lword      _int_abort                       ; 223: 223:RXI3
+        .lword      _int_abort                       ; 224: 224:TXI3
+        .lword      _int_abort                       ; 225: 225:TEI3
+        .lword      _int_abort                       ; 226: 226:RXI4
+        .lword      _int_abort                       ; 227: 227:TXI4
+        .lword      _int_abort                       ; 228: 228:TEI4
+        .lword      _int_abort                       ; 229: 229:RXI5
+        .lword      _int_abort                       ; 230: 230:TXI5
+        .lword      _int_abort                       ; 231: 231:TEI5
+        .lword      _int_abort                       ; 232: 232:RXI6
+        .lword      _int_abort                       ; 233: 233:TXI6
+        .lword      _int_abort                       ; 234: 234:TEI6
+        .lword      _int_abort                       ; 235: 235:RXI7
+        .lword      _int_abort                       ; 236: 236:TXI7
+        .lword      _int_abort                       ; 237: 237:TEI7
+        .lword      _int_abort                       ; 238: 238:RXI8
+        .lword      _int_abort                       ; 239: 239:TXI8
+        .lword      _int_abort                       ; 240: 240:TEI8
+        .lword      _int_abort                       ; 241: 241:RXI9
+        .lword      _int_abort                       ; 242: 242:TXI9
+        .lword      _int_abort                       ; 243: 243:TEI9
+        .lword      _int_abort                       ; 244: 244:RXI10
+        .lword      _int_abort                       ; 245: 245:TXI10
+        .lword      _int_abort                       ; 246: 246:TEI10
+        .lword      _int_abort                       ; 247: 247:RXI11
+        .lword      _int_abort                       ; 248: 248:TXI11
+        .lword      _int_abort                       ; 249: 249:TEI11
+        .lword      _int_abort                       ; 250: 250:RXI12
+        .lword      _int_abort                       ; 251: 251:TXI12
+        .lword      _int_abort                       ; 252: 252:TEI12
+        .lword      _int_abort                       ; 253: 253:IEBINT
+        .lword      _int_abort                       ; 254: 254:reserved
+        .lword      _int_abort                       ; 255: 255:reserved
+
+        .section    FIXEDVECT,ROMDATA,ALIGN=4
+        .lword      default_exception       ; FFFFFFD0h:特権命令例外
+        .lword      _int_abort              ; FFFFFFD4h
+        .lword      _int_abort              ; FFFFFFD8h
+        .lword      default_exception       ; FFFFFFDCh:未定義命令例外
+        .lword      _int_abort              ; FFFFFFE0h
+        .lword      default_exception       ; FFFFFFE4h:FPU例外
+        .lword      _int_abort              ; FFFFFFE8h
+        .lword      _int_abort              ; FFFFFFECh
+        .lword      _int_abort              ; FFFFFFF0h
+        .lword      _int_abort              ; FFFFFFF4h
+        .lword      default_exception       ; FFFFFFF8h:NMI割込み
+        .lword      _ResetHandler           ; FFFFFFFCh:リセット
+        .END
+
+;* end

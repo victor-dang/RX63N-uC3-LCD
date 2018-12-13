@@ -1,0 +1,201 @@
+;****************************************************************************
+;* Exception Handler                                                        *
+;*                                                                          *
+;*  File name : excp.src                                                    *
+;****************************************************************************
+
+;* Section definition
+
+        .section    PIntPRG,CODE,ALIGN=8
+
+;* Definition of Standard function
+
+        .glb     __kernel_systbl
+        .glb     __kernel_entint
+        .glb     __kernel_retint
+        .glb     _int_abort
+
+;* Definition of ISR and Extention info
+
+        .glb     _ddr_lcd_intr
+        .glb     __ddr_rx_cmt0_isr
+        .glb     _ddr_tpl_intr
+        .glb     __ddr_rx_sci_i2c_mgr2
+        .glb     __ddr_rx_sci_i2c_intr_rxi
+        .glb     __ddr_rx_sci_i2c_mgr2
+        .glb     __ddr_rx_sci_i2c_intr_txi
+        .glb     __ddr_rx_sci_i2c_mgr2
+        .glb     __ddr_rx_sci_i2c_intr_tei
+
+;* Definition of Const
+
+
+;* Exception handler
+
+        .align  8
+        .glb    default_exception
+default_exception:
+        pushm   r1-r5
+        pushm   r14-r15
+        mvfacmi r3
+        shll    #16,r3
+        mvfachi r4
+        pushm   r3-r4
+        mov.l   #_int_abort,r14
+        mov.l   sp,r1
+        jsr     r14
+        popm    r3-r4
+        mvtaclo r3
+        mvtachi r4
+        popm    r14-r15
+        popm    r1-r5
+        rte
+
+
+;* Non Kernel Interrupt handler
+
+        .align  8
+        .glb    exphdr_152
+exphdr_152:
+        pushm   r1-r5
+        pushm   r14-r15
+        mvfacmi r3
+        shll    #16,r3
+        mvfachi r4
+        pushm   r3-r4
+        mov.l   #_ddr_lcd_intr,r14
+        mov.l   sp,r1
+        jsr     r14
+        popm    r3-r4
+        mvtaclo r3
+        mvtachi r4
+        popm    r14-r15
+        popm    r1-r5
+        rte
+
+
+;* Interrupt handler
+
+        .align  8
+        .glb    inthdr_28
+inthdr_28:
+    .if CONFIG_B32 == 0
+    ; This code is indicated except for '32 bits function branches option'
+        pushm   r1-r5
+        mov.l   #28,r1                     ; number of interrupt
+        bsr     __kernel_entint
+        mov.l   #0,r1                      ; set exinf parameter
+        bsr     __ddr_rx_cmt0_isr
+        bra     __kernel_retint
+    .else
+    ; This code is indicated '32 bits function branches option'
+        pushm   r1-r5
+        mov.l   #28,r1                     ; number of interrupt
+        mov.l   #__kernel_entint,r5
+        jsr     r5
+        mov.l   #__ddr_rx_cmt0_isr,r5
+        mov.l   #0,r1                      ; set exinf parameter
+        jsr     r5
+        mov.l   #__kernel_retint,r5
+        jmp     r5
+    .endif
+
+        .align  8
+        .glb    inthdr_69
+inthdr_69:
+    .if CONFIG_B32 == 0
+    ; This code is indicated except for '32 bits function branches option'
+        pushm   r1-r5
+        mov.l   #69,r1                     ; number of interrupt
+        bsr     __kernel_entint
+        mov.l   #0,r1                      ; set exinf parameter
+        bsr     _ddr_tpl_intr
+        bra     __kernel_retint
+    .else
+    ; This code is indicated '32 bits function branches option'
+        pushm   r1-r5
+        mov.l   #69,r1                     ; number of interrupt
+        mov.l   #__kernel_entint,r5
+        jsr     r5
+        mov.l   #_ddr_tpl_intr,r5
+        mov.l   #0,r1                      ; set exinf parameter
+        jsr     r5
+        mov.l   #__kernel_retint,r5
+        jmp     r5
+    .endif
+
+        .align  8
+        .glb    inthdr_220
+inthdr_220:
+    .if CONFIG_B32 == 0
+    ; This code is indicated except for '32 bits function branches option'
+        pushm   r1-r5
+        mov.l   #220,r1                     ; number of interrupt
+        bsr     __kernel_entint
+        mov.l   #__ddr_rx_sci_i2c_mgr2,r1                      ; set exinf parameter
+        bsr     __ddr_rx_sci_i2c_intr_rxi
+        bra     __kernel_retint
+    .else
+    ; This code is indicated '32 bits function branches option'
+        pushm   r1-r5
+        mov.l   #220,r1                     ; number of interrupt
+        mov.l   #__kernel_entint,r5
+        jsr     r5
+        mov.l   #__ddr_rx_sci_i2c_intr_rxi,r5
+        mov.l   #__ddr_rx_sci_i2c_mgr2,r1                      ; set exinf parameter
+        jsr     r5
+        mov.l   #__kernel_retint,r5
+        jmp     r5
+    .endif
+
+        .align  8
+        .glb    inthdr_221
+inthdr_221:
+    .if CONFIG_B32 == 0
+    ; This code is indicated except for '32 bits function branches option'
+        pushm   r1-r5
+        mov.l   #221,r1                     ; number of interrupt
+        bsr     __kernel_entint
+        mov.l   #__ddr_rx_sci_i2c_mgr2,r1                      ; set exinf parameter
+        bsr     __ddr_rx_sci_i2c_intr_txi
+        bra     __kernel_retint
+    .else
+    ; This code is indicated '32 bits function branches option'
+        pushm   r1-r5
+        mov.l   #221,r1                     ; number of interrupt
+        mov.l   #__kernel_entint,r5
+        jsr     r5
+        mov.l   #__ddr_rx_sci_i2c_intr_txi,r5
+        mov.l   #__ddr_rx_sci_i2c_mgr2,r1                      ; set exinf parameter
+        jsr     r5
+        mov.l   #__kernel_retint,r5
+        jmp     r5
+    .endif
+
+        .align  8
+        .glb    inthdr_222
+inthdr_222:
+    .if CONFIG_B32 == 0
+    ; This code is indicated except for '32 bits function branches option'
+        pushm   r1-r5
+        mov.l   #222,r1                     ; number of interrupt
+        bsr     __kernel_entint
+        mov.l   #__ddr_rx_sci_i2c_mgr2,r1                      ; set exinf parameter
+        bsr     __ddr_rx_sci_i2c_intr_tei
+        bra     __kernel_retint
+    .else
+    ; This code is indicated '32 bits function branches option'
+        pushm   r1-r5
+        mov.l   #222,r1                     ; number of interrupt
+        mov.l   #__kernel_entint,r5
+        jsr     r5
+        mov.l   #__ddr_rx_sci_i2c_intr_tei,r5
+        mov.l   #__ddr_rx_sci_i2c_mgr2,r1                      ; set exinf parameter
+        jsr     r5
+        mov.l   #__kernel_retint,r5
+        jmp     r5
+    .endif
+
+
+        .end
+

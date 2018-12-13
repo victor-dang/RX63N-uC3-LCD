@@ -1,0 +1,174 @@
+;****************************************************************************
+;* Reset Handler                                                            *
+;*                                                                          *
+;*  File name : prst.src                                                 *
+;****************************************************************************
+
+
+;* Section definition
+
+        .section    SI,DATA,ALIGN=4
+        .section    SU,DATA,ALIGN=4
+        .section    VECTTBL,ROMDATA,ALIGN=4
+
+;* IO definition
+
+IOBASE      .equ    00080000h
+
+MSTPCRA     .equ    0010h
+
+SCKCR       .equ    0020h
+SCKCR2      .equ    0024h
+SCKCR3      .equ    0026h
+PLLCR       .equ    0028h
+PLLCR2      .equ    002Ah
+BCKCR       .equ    0030h
+MOSCCR      .equ    0032h
+OPCCR       .equ    00A0h
+MOSCWTCR    .equ    00A2h
+PLLWTCR     .equ    00A6h
+PRCR        .equ    03FEh
+
+P3PDR       .equ   0C003h   ; Clock
+P3PMR       .equ   0C063h   ; XTAL/EXTAL P36, P37
+
+IR28        .equ    701Ch   ; CMI0
+IR29        .equ    701Dh   ; CMI1
+IR30        .equ    701Eh   ; CMI2
+IR31        .equ    701Fh   ; CMI3
+
+CMSTR0      .equ    8000h
+CMT0CR      .equ    8002h
+CMT0CNT     .equ    8004h
+CMT0COR     .equ    8006h
+CMT1CR      .equ    8008h
+CMT1CNT     .equ    800Ah
+CMT1COR     .equ    800Ch
+
+CMSTR1      .equ    8010h
+CMT2CR      .equ    8012h
+CMT2CNT     .equ    8014h
+CMT2COR     .equ    8016h
+CMT3CR      .equ    8018h
+CMT3CNT     .equ    801Ah
+CMT3COR     .equ    801Ch
+
+FLBASE      .equ    007F0000h
+FENTRYR     .equ   0FFB2h
+
+;* Reset
+
+        .section    PResetPRG,CODE
+        .glb        _ResetHandler
+_ResetHandler:
+        mvtc    #(topof SI + sizeof SI),isp
+        mvtc    #(topof SU + sizeof SU),usp
+        setpsw  u
+        mvtc    #topof VECTTBL,intb
+
+        bsr     InitTarget
+        bsr     __INITSCT
+        bsr     _main
+
+        .glb    __INITSCT
+        .glb    _main
+
+exit:
+        bra     exit
+
+InitTarget:
+        mov.l   #IOBASE,r5
+        mov.w   #0a503h,PRCR[r5]        ; PRC[0-1] is unlocked
+        btst    #0,PLLCR2[r5]
+        beq     InitTarget_end          ; PLL has been already enabled
+        mov.b   #0,P3PDR[r5]            ; clock port
+        mov.b   #0c0h,P3PMR[r5]
+_0b:
+        btst    #4,OPCCR[r5]            ; loop if OPCMTSF != 0
+        bne     _0b
+        mov.l   #FLBASE,r6
+_1b:
+        btst    #0,FENTRYR[r6]          ; loop if FENTRY0 != 0
+        bne     _1b
+_2b:
+        btst    #1,FENTRYR[r6]          ; loop if FENTRY1 != 0
+        bne     _2b
+_3b:
+        btst    #2,FENTRYR[r6]          ; loop if FENTRY2 != 0
+        bne     _3b
+_4b:
+        btst    #3,FENTRYR[r6]          ; loop if FENTRY3 != 0
+        bne     _4b
+
+        bsr     ini_cmt0
+
+        mov.b   #0eh,MOSCWTCR[r5]       ; wait 83.33ns(1/12MHz) x 262144cycle = 21.85ms
+        bclr    #0,MOSCCR[r5]           ; enable main clock
+_5b:
+        btst    #0,MOSCCR[r5]
+        bne     _5b
+bsr     wait_main                       ; >= tMAINOSC
+
+        mov.b   #0bh,PLLWTCR[r5]        ; 262144cycle wait 
+        mov.w   #0fh<<8|00h,PLLCR[r5] ; STC and PLIDIV setup
+        bclr    #0,PLLCR2[r5]           ; enable PLL
+        bsr     wait_pll                ; >= tPLLWT2
+
+        mov.b   #01h,BCKCR[r5]            ; BCLKDIV=BCLK/2 
+        mov.l   #0032h,r4             ; UCLK and IEBCLK setup
+        mov.w   r4,SCKCR2[r5]
+        mov.l   #02h<<28|01h<<24|01h<<23|01h<<22|02h<<16|01h<<12|02h<<8|11h,r4 ;PCKA,PCKB,BCK,SDCLK terminal,BCLK_DIV terminal,ICK,FCK
+        mov.l   r4,SCKCR[r5]
+_6b:
+        cmp     SCKCR[r5].l,r4
+        bne     _6b
+        mov.w   #04h<<8,SCKCR3[r5]      ; system clock source select
+        cmp     SCKCR3[r5].w,r5         ; for IO sync
+
+        bsr     rst_cmt0
+
+InitTarget_end:
+        mov.w   #0a500h,PRCR[r5]        ; register is protected
+        rts
+
+ini_cmt0:
+        mov.l   MSTPCRA[r5],r4
+        bclr    #15,r4                  ; enable MSTPA15(CMT0,1)
+        mov.l   r4,MSTPCRA[r5]
+        mov.w   #0,CMSTR0[r5]           ; stop CMT0
+        rts
+
+rst_cmt0:
+        mov.w   #0,CMT0CR[r5]
+        mov.w   #0,CMT0CNT[r5]
+        mov.w   #0,CMT0COR[r5]
+        mov.l   MSTPCRA[r5],r4
+        bset    #15,r4                  ; disable MSTPA15(CMT0,1)
+        mov.l   r4,MSTPCRA[r5]
+        rts
+
+wait_main:
+        mov.w   #0040h,CMT0CR[r5]       ; PCLK/8 | CMIE
+        mov.w   #0,CMT0CNT[r5]
+        mov.w   #375,CMT0COR[r5]        ; 125000Hz *24 / 8000
+        mov.w   #1,CMSTR0[r5]
+_20b:
+        btst    #0,IR28[r5]
+        beq     _20b
+        mov.w   #0,CMSTR0[r5]           ; stop CMT0
+        bclr    #0,IR28[r5]
+        rts
+
+wait_pll:
+        mov.w   #0040h,CMT0CR[r5]       ; PCLK/8 | CMIE
+        mov.w   #0,CMT0CNT[r5]
+        mov.w   #47,CMT0COR[r5]        ; 125000Hz *3 / 8000
+        mov.w   #1,CMSTR0[r5]
+_21b:
+        btst    #0,IR28[r5]
+        beq     _21b
+        mov.w   #0,CMSTR0[r5]           ; stop CMT0
+        bclr    #0,IR28[r5]
+        rts
+
+        .end
