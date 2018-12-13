@@ -5,7 +5,7 @@
 	Evaluation board: Alpha Project Co., Ltd.
 		AP-RX63N-0A (RX 600 series RX63N CPU board)
 		Alpha Project Co., Ltd.
-		LCD-KIT-D01 (multi-touch compatible capacitive touch panel LCD kit)?????????????
+		LCD-KIT-D01 (multi-touch compatible capacitive touch panel LCD kit)
 3. Compiler: Renesas Electronics Corporation Integrated development environment CubeSuite + v1.03.00
 4. Debugger: Renesas Electronics Corporation On-chip debugging emulator E1 emulator
 
